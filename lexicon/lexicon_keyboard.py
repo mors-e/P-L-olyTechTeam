@@ -1,0 +1,1 @@
+LEXICONKEY: dict = {"/start_road": "Начать путь"}
