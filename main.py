@@ -7,6 +7,7 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from config.config import Config, load_config
 
 logger = logging.getLogger(__name__)
+storage: RedisStorage2 = RedisStorage2()
 
 
 def register_all_handlers(dp: Dispatcher) -> None:
@@ -20,8 +21,6 @@ async def main():
                u'[%(asctime)s] - %(name)s - %(message)s')
 
     logger.info("Starting Bot")
-
-    storage: RedisStorage2 = RedisStorage2()
 
     config: Config = load_config('.env')
 
