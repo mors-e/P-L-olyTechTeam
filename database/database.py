@@ -199,3 +199,16 @@ def select_all_pages() -> int:
         return count
     except Exception as ex:
         print(ex)
+
+
+async def add_ban_list(id: int):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                        password=config.database.password, db=config.database.database,
+                                        loop=loop)
+        async with conn.cursor() as cur:
+            string = f"INSERT INTO blank_list " \
+                     f"VALUES {id}"
+        conn.close()
+    except Exception as ex:
+        print(ex)

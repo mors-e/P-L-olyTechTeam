@@ -4,12 +4,17 @@ from aiogram import Dispatcher
 from keyboard.keyboard import create_inline_kb
 from lexicon.lexicon_chat import LEXICONCHATHR
 from fsm_state.fsm_state import FSMChatHR
-from database.database import is_message, add_message_db_hr, change_status_questions
+from database.database import (is_message, add_message_db_hr, change_status_questions,
+                               is_staff_user)
 
 
 async def chat_start(message: Message):
     await message.answer(text=LEXICONCHATHR['/start_request'], reply_markup=create_inline_kb(1, "request"))
     await FSMChatHR.start.set()
+
+
+async def chat_start_error(message: Message):
+    await message.answer(text="Вы не является hr для этой команды!")
 
 
 async def request(callback: CallbackQuery, state):
@@ -37,7 +42,13 @@ async def await_request(message: Message, state):
 
 
 def register_chat_commands_hr(dp: Dispatcher):
-    dp.register_message_handler(chat_start, commands=['start_request'])
-    dp.register_callback_query_handler(request, text=['request'], state=FSMChatHR.start)
-    dp.register_message_handler(await_request, lambda x: x.text.isalpha() or not x.text.isalpha(),
+    dp.register_message_handler(chat_start_error, lambda x: x.text == '/start_request'
+                                                            and is_staff_user(int(x.from_user.id)) == 'staff')
+    dp.register_message_handler(chat_start, lambda x: x.text == '/start_request'
+                                                      and is_staff_user(int(x.from_user.id)) == 'hr')
+    dp.register_callback_query_handler(request, lambda x: x.data == 'request'
+                                                         and is_staff_user(int(x.from_user.id)) == 'hr',
+                                       state=FSMChatHR.start)
+    dp.register_message_handler(await_request, lambda x: (x.text.isalpha() or not x.text.isalpha())
+                                                         and is_staff_user(int(x.from_user.id)) == 'hr',
                                 state=FSMChatHR.request)
