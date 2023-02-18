@@ -8,7 +8,7 @@ from keyboard.keyboard import create_keyboard, create_inline_kb
 
 
 async def start_message(message: Message):
-    await message.answer(text=LEXICON['/start'], reply_markup=create_keyboard('start_road'))
+    await message.answer(text=LEXICON['/start_test'], reply_markup=create_keyboard('start_road'))
 
 
 async def starting_road(callback: CallbackQuery):
@@ -32,7 +32,7 @@ async def error_starting_road(callback: CallbackQuery):
 
 
 def register_handlers_main(dp: Dispatcher):
-    dp.register_message_handler(start_message, commands=['start'])
+    dp.register_message_handler(start_message, commands=['start_test'])
     dp.register_callback_query_handler(starting_road, lambda x: x.data == 'start_road' and
                                        is_staff_user(int(x.from_user.id)) == "staff")
     dp.register_callback_query_handler(starting_road_hr, lambda x: x.data == 'start_road' and

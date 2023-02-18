@@ -9,7 +9,6 @@ from chat.command_staff import register_chat_commands_staff
 from config.config import Config, load_config
 from handlers.handlers_main import register_handlers_main
 from handlers.fsw import register_fsm_handlers
-from chat.command_chat import register_chat_commands
 from handlers.head import register_head_handlers
 from main_set_menu.set_menu import set_main_menu
 
@@ -21,7 +20,6 @@ storage: RedisStorage2 = RedisStorage2()
 def register_all_handlers(dp: Dispatcher) -> None:
     register_handlers_main(dp)
     register_fsm_handlers(dp)
-    register_chat_commands(dp)
     register_head_handlers(dp)
     register_chat_commands_staff(dp)
     register_chat_commands_hr(dp)
