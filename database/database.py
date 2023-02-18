@@ -51,7 +51,6 @@ def is_staff_user(id: int) -> str:
         return "None"
 
 
-
 async def add_message_db(data: dict, id_user):
     try:
         conn = await aiomysql.connect(user=config.database.user,
