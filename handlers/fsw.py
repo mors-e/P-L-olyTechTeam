@@ -112,8 +112,47 @@ async def process_full_expectations(message: Message, state: FSMContext):
     await FSMFillForm.college_revue.set()
 
 
+async def process_full_expectations_more(message: Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['college_revue'] = message.text
+
+    await message.answer(text=LEXICONFSM['college_intimate'], reply_markup=create_inline_kb(
+        2, 'yes_col', 'no_col', 'more_col'
+    ))
+
+    await FSMFillForm.college_intimate.set()
+
+
 async def warning_full_expectations(message: Message):
     await message.answer(text=LEXICONFSM['warning_full_expectations'])
+
+
+async def warning_full_expectations_more(message: Message):
+    await message.answer(text=LEXICONFSM['warning_full_expectations'])
+
+
+async def process_college_revue(callback: CallbackQuery, state: FSMContext):
+    if callback.data != 'more':
+        async with state.proxy() as data:
+            data['college_revue'] = callback.data
+
+        await callback.message.edit_text(text=LEXICONFSM['college_intimate'], reply_markup=create_inline_kb(
+            2, 'yes_col', 'no_col', 'more_col'
+        ))
+
+        await FSMFillForm.college_intimate.set()
+    else:
+        await callback.message.edit_text(text=LEXICONFSM['process_full_expectations_more'])
+        await FSMFillForm.college_revue_more.set()
+
+
+#async def process_more_ex(callback:)
+
+
+async def warning_college_revue(message: Message):
+    await message.answer(text=LEXICONFSM['warning_college_revue'], reply_markup=create_inline_kb(
+        3, 'yes_ex', 'no_ex', 'im_ex', 'more'
+    ))
 
 
 def register_fsm_handlers(dp: Dispatcher):
@@ -135,3 +174,10 @@ def register_fsm_handlers(dp: Dispatcher):
     dp.register_message_handler(process_full_expectations, lambda x: x.text.isalpha() or not x.text.isalpha(),
                                 state=FSMFillForm.full_expectations)
     dp.register_message_handler(warning_full_expectations, content_types='any', state=FSMFillForm.full_expectations)
+    dp.register_callback_query_handler(process_college_revue, text=['yes_ex', 'no_ex', 'im_ex', 'more'],
+                                       state=FSMFillForm.college_revue)
+    dp.register_message_handler(process_full_expectations_more, lambda x: x.text.isalpha() or not x.text.isalpha(),
+                                state=FSMFillForm.college_revue_more)
+    dp.register_message_handler(warning_full_expectations_more, content_types='any',
+                                state=FSMFillForm.college_revue_more)
+    dp.register_message_handler(warning_college_revue, content_types='any', state=FSMFillForm.college_revue)

@@ -10,6 +10,7 @@ class FSMFillForm(StatesGroup):
     rate_expectations = State()
     full_expectations = State()
     college_revue = State()
+    college_revue_more = State()
     college_intimate = State()
     college_other = State()
     your_duties = State()
