@@ -4,7 +4,7 @@ from aiogram import Dispatcher
 from keyboard.keyboard import create_inline_kb
 from lexicon.lexicon_chat import LEXICONCHATHR
 from fsm_state.fsm_state import FSMChatHR
-from database.database import is_message, add_message_db_hr
+from database.database import is_message, add_message_db_hr, change_status_questions
 
 
 async def chat_start(message: Message):
@@ -15,8 +15,12 @@ async def chat_start(message: Message):
 async def request(callback: CallbackQuery, state):
     async with state.proxy() as data:
         data['req'] = callback.data
-    await callback.message.answer(text=f"Вопрос от 'tg://user?id={is_message()[3]}':\n{is_message()[1]}\n{LEXICONCHATHR['await_request']}")
-    await FSMChatHR.request.set()
+    if is_message() is not None:
+        await callback.message.answer(text=f"Вопрос от 'tg://user?id={is_message()[3]}':\n{is_message()[1]}\n{LEXICONCHATHR['await_request']}")
+        await FSMChatHR.request.set()
+    else:
+        await callback.message.answer(text='No new message')
+        await state.finish()
 
 
 async def await_request(message: Message, state):
@@ -24,6 +28,7 @@ async def await_request(message: Message, state):
         data['text'] = message.text
         data['id_massage'] = f'{is_message()[0]}'
         data['id_user'] = f'{message.from_user.id}'
+        await change_status_questions(data['id_massage'])
         await add_message_db_hr(data)
     await message.answer(text='Ответ отправлен!')
     await state.finish()
