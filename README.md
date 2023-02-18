@@ -1,22 +1,28 @@
 # Запуск проект
 **Создать вирутальную среду**   
-```python
+```commandline
 python -m venv env
 ```
 **Активировать env**  
 ***- для Windows***
-```python
+```commandline
 venv\Scripts\activate.bat
 ```
 ***- для Linux и MacOS***
-```python
+```commandline
 . venv/bin/activate
 ```
 **Установка библиотек**
-```python
+```commandline
 pip install -r requirements.txt
 ```
 **Поднять редис в докере**
-```python
+```commandline
 docker-compose up -d
+```
+## База Данных
+**Чтобы создать БД нужно выполнить SQL-инъекцию**  
+**Заполнение данных происходит тоже по SQL-инъекции**
+```
+
 ```
