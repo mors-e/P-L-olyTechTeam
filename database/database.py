@@ -49,3 +49,19 @@ def is_staff_user(id: int) -> str:
     except Exception as ex:
         print(ex)
         return "none"
+
+
+async def add_message_db(data: dict, id_user):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password,
+                                      db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+            add_mess = f'INSERT INTO message_chat (text, id_user)' \
+                       f"VALUES('{data['text']}', '{id_user}')"
+            await cur.execute(add_mess)
+            await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)

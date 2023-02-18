@@ -34,3 +34,10 @@ class FSMFillForm(StatesGroup):
     working_comfort = State()
     comfort = State()
     other = State()
+
+
+class FSMChat(StatesGroup):
+    start = State()
+    chat_hr = State()
+    questions = State()
+    await_message = State()
