@@ -118,3 +118,84 @@ async def change_status_questions(data: dict):
         conn.close()
     except Exception as ex:
         print(ex)
+
+
+async def add_week_one(message: Message, *adata: tuple):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password, db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+
+            add_week = f'INSERT INTO '
+    except Exception as ex:
+        print(ex)
+
+
+def page_prez(id: int):
+    try:
+        conn = conn = pymysql.connect(host=config.database.host,
+                                      user=config.database.user,
+                                      password=config.database.password,
+                                      database=config.database.database)
+        count: int
+        with conn.cursor() as cur:
+            page = f'SELECT count FROM staff ' \
+                   f'WHERE id_staff={int(id)}'
+            cur.execute(page)
+            count = cur.fetchone()
+        print(count)
+        conn.close()
+        return count[0]
+    except Exception as ex:
+        print(ex)
+
+
+async def update(id: int, count: int):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password, db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+            up = f'UPDATE staff SET count=%s WHERE id_staff={id}'
+            await cur.execute(up, count)
+            await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+def get_photo(count: int) -> str:
+    try:
+        conn = conn = pymysql.connect(host=config.database.host,
+                                      user=config.database.user,
+                                      password=config.database.password,
+                                      database=config.database.database)
+        string: str = ''
+        with conn.cursor() as cur:
+            get_id = f"SELECT file_id FROM slides " \
+                     f"WHERE idslides=%s"
+            cur.execute(get_id, count)
+            string = cur.fetchone()
+        conn.close()
+        return str(string[0])
+    except Exception as ex:
+        print(ex)
+
+
+def select_all_pages() -> int:
+    try:
+        conn = conn = pymysql.connect(host=config.database.host,
+                                      user=config.database.user,
+                                      password=config.database.password,
+                                      database=config.database.database)
+        count: int
+        with conn.cursor() as cur:
+            select = f'SELECT * FROM slides'
+            cur.execute(select)
+            count = len(cur.fetchall())
+        print(count)
+        conn.close()
+        return count
+    except Exception as ex:
+        print(ex)

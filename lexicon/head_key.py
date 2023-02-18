@@ -1,0 +1,4 @@
+LEXICON: dict = {
+    "backward": "<<",
+    "forward": ">>"
+}

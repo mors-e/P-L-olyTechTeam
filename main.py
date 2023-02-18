@@ -21,6 +21,8 @@ storage: RedisStorage2 = RedisStorage2()
 def register_all_handlers(dp: Dispatcher) -> None:
     register_handlers_main(dp)
     register_fsm_handlers(dp)
+    register_chat_commands(dp)
+    register_head_handlers(dp)
     register_chat_commands_staff(dp)
     register_chat_commands_hr(dp)
 
@@ -38,7 +40,7 @@ async def main():
     bot: Bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
     dp: Dispatcher = Dispatcher(bot, storage=storage)
 
-    #await set_main_menu(dp)
+    await set_main_menu(dp)
     register_all_handlers(dp)
 
     try:
