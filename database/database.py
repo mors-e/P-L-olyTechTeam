@@ -32,18 +32,20 @@ async def add_user(message: Message):
         print("Юзер уже добавлен")
 
 
-def is_staff_user(message: Message) -> str:
+def is_staff_user(id: int) -> str:
     try:
         conn = pymysql.connect(host=config.database.host,
                                user=config.database.user,
                                password=config.database.password,
                                database=config.database.database)
+        temp: str
         with conn.cursor() as cur:
             is_user = f"SELECT post FROM all_users" \
-                      f" WHERE id_user={message.from_user.id}"
+                      f" WHERE id_user={id}"
             cur.execute(is_user)
-            return cur.fetchone()[0]
+            temp = cur.fetchone()[0]
+        conn.close()
+        return temp
     except Exception as ex:
         print(ex)
-    finally:
         return "none"
