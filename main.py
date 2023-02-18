@@ -41,7 +41,7 @@ async def main():
     try:
         await dp.start_polling()
     finally:
-        await bot.closed()
+        await bot.close()
 
 
 if __name__ == '__main__':
