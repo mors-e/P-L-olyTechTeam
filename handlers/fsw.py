@@ -8,7 +8,7 @@ from lexicon.lexicon_fsm import LEXICONFSM
 from keyboard.keyboard import create_keyboard, create_inline_kb
 from fsm_state.fsm_state import FSMFillForm
 from servises.servises import is_valid, is_valid_fio, is_valid_date
-#from database.database import add_week_one
+from database.database import add_week_one
 
 
 async def process_cancel(message: Message, state: FSMContext):

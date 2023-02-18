@@ -1,6 +1,7 @@
 from aiogram.types import (InlineKeyboardButton, InlineKeyboardMarkup,
                            KeyboardButton, ReplyKeyboardMarkup)
 from lexicon.lexicon_keyboard import LEXICONKEY
+from lexicon.head_key import LEXICON
 
 
 def create_keyboard(*buttons: str) -> InlineKeyboardMarkup:
@@ -29,3 +30,10 @@ def create_inline_kb(row_width: int, *args, **kwargs) -> InlineKeyboardMarkup:
                             text=text,
                             callback_data=button)) for button, text in kwargs.items()]
     return inline_kb
+
+
+def create_pagination_keyboard(*buttons: str) -> InlineKeyboardMarkup:
+    pagination_kb: InlineKeyboardMarkup = InlineKeyboardMarkup()
+    pagination_kb.row(*[InlineKeyboardButton(LEXICON[button] if button in LEXICON else button,
+                      callback_data=button) for button in buttons])
+    return pagination_kb
