@@ -11,4 +11,5 @@ LEXICONKEY: dict = {'message': 'Сообщения',
                     'more': 'Другое',
                     'chat_hr': 'Живой чат с hr-ом ',
                     'questions': 'Задать вопрос hr-у',
+                    'request': "Показать сообщение"
                     }

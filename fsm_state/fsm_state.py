@@ -37,8 +37,14 @@ class FSMFillForm(StatesGroup):
     other = State()
 
 
-class FSMChat(StatesGroup):
+class FSMChatStaff(StatesGroup):
     start = State()
     chat_hr = State()
     questions = State()
+    await_message = State()
+
+
+class FSMChatHR(StatesGroup):
+    start = State()
+    request = State()
     await_message = State()
