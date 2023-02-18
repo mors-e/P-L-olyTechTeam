@@ -48,7 +48,7 @@ def is_staff_user(id: int) -> str:
         return temp
     except Exception as ex:
         print(ex)
-        return "none"
+        return "None"
 
 
 async def add_message_db(data: dict, id_user):
