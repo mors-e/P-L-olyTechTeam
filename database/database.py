@@ -51,15 +51,15 @@ def is_staff_user(id: int) -> str:
         return "none"
 
 
-async def add_message_db(data: dict, id_user):
+async def add_message_db(data: dict, id_user, chat_id):
     try:
         conn = await aiomysql.connect(user=config.database.user,
                                       password=config.database.password,
                                       db=config.database.database,
                                       loop=loop)
         async with conn.cursor() as cur:
-            add_mess = f'INSERT INTO message_chat (text, id_user)' \
-                       f"VALUES('{data['text']}', '{id_user}')"
+            add_mess = f'INSERT INTO message_chat (text, id_user, chat_id)' \
+                       f"VALUES('{data['text']}', '{id_user}', '{chat_id}')"
             await cur.execute(add_mess)
             await conn.commit()
         conn.close()
