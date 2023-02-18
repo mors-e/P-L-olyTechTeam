@@ -51,15 +51,68 @@ def is_staff_user(id: int) -> str:
         return "none"
 
 
-async def add_message_db(data: dict, id_user):
+async def add_message_db(data: dict, id_user, chat_id):
     try:
         conn = await aiomysql.connect(user=config.database.user,
                                       password=config.database.password,
                                       db=config.database.database,
                                       loop=loop)
         async with conn.cursor() as cur:
-            add_mess = f'INSERT INTO message_chat (text, id_user)' \
-                       f"VALUES('{data['text']}', '{id_user}')"
+            add_mess = f'INSERT INTO message_chat (text, id_user, chat_id)' \
+                       f"VALUES('{data['text']}', '{id_user}', '{chat_id}')"
+            await cur.execute(add_mess)
+            await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+def is_message():
+    try:
+        conn = pymysql.connect(host=config.database.host,
+                               user=config.database.user,
+                               password=config.database.password,
+
+                               database=config.database.database)
+        with conn.cursor() as cur:
+            is_user = f"SELECT * FROM message_chat" \
+                      f" WHERE request_message = 0"
+            cur.execute(is_user)
+            temp = cur.fetchone()
+        conn.close()
+        return temp
+
+    except Exception as ex:
+        print(ex)
+        return None
+
+
+async def add_message_db_hr(data: dict):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password,
+                                      db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+            add_mess = f'INSERT INTO request_chat (text, id_message, id_user)' \
+                       f"VALUES('{data['text']}', '{data['id_massage']}', '{data['id_user']}')"
+            await cur.execute(add_mess)
+            await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+async def change_status_questions(data: dict):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password,
+                                      db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+            add_mess = f"UPDATE message_chat " \
+                       f"SET request_message = true " \
+                       f"WHERE id_message_chat={data}"
             await cur.execute(add_mess)
             await conn.commit()
         conn.close()
