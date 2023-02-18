@@ -43,7 +43,19 @@ venv\Scripts\activate.bat
 **Установка библиотек**
 ```commandline
 pip install -r requirements.txt
+```  
+***Следует создать файл .env для переменных окружения***  
+Примерное наполнение env файла:  
+```commandline
+TOKEN=your_token_api_telegram
+
+HOST=localhost
+PORT=3306
+USER=root
+PASSWORD=root
+DATABASE=xakaton
 ```
+
 **Поднять редис в докере**
 ```commandline
 docker-compose up -d
