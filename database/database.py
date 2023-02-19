@@ -113,7 +113,7 @@ async def change_status_questions(data: dict):
         async with conn.cursor() as cur:
             add_mess = f"UPDATE message_chat " \
                        f"SET request_message = true " \
-                       f"WHERE id_message_chat={data}"
+                       f"WHERE id_message={data}"
             await cur.execute(add_mess)
             await conn.commit()
         conn.close()

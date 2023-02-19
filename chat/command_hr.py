@@ -36,7 +36,8 @@ async def await_request(message: Message, state):
         data['chat_id'] = f'{is_message()[4]}'
         await change_status_questions(data['id_massage'])
         await add_message_db_hr(data)
-        await message.send_copy(data['chat_id'], message_thread_id=message.message_thread_id, reply_to_message_id=data['id_massage'])
+        await message.send_copy(data['chat_id'], message_thread_id=message.message_thread_id,
+                                reply_to_message_id=data['id_massage'])
     await message.answer(text='Ответ отправлен!')
     await state.finish()
 
