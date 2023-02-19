@@ -58,8 +58,8 @@ async def add_message_db(data: dict, id_user, chat_id):
                                       db=config.database.database,
                                       loop=loop)
         async with conn.cursor() as cur:
-            add_mess = f'INSERT INTO message_chat (text, id_user, chat_id)' \
-                       f"VALUES('{data['text']}', '{id_user}', '{chat_id}')"
+            add_mess = f'INSERT INTO message_chat (id_message, text, id_user, chat_id)' \
+                       f"VALUES('{data['id_massage']}', '{data['text']}', '{id_user}', '{chat_id}')"
             await cur.execute(add_mess)
             await conn.commit()
         conn.close()
