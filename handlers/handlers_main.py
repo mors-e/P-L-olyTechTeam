@@ -1,6 +1,5 @@
 from aiogram import Dispatcher
 from aiogram.types import CallbackQuery, Message
-from aiogram.dispatcher.filters import Text, Command
 
 from lexicon.lexicon_main import LEXICON
 from database.database import add_user, is_staff_user

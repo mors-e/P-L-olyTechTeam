@@ -4,14 +4,14 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
-from chat.command_hr import register_chat_commands_hr
-from chat.command_staff import register_chat_commands_staff
 from config.config import Config, load_config
 from handlers.handlers_main import register_handlers_main
 from handlers.fsw import register_fsm_handlers
 from handlers.head import register_head_handlers
 from main_set_menu.set_menu import set_main_menu
 from handlers.admin import register_admin
+from chat.command_hr import register_chat_commands_hr
+from chat.command_staff import register_chat_commands_staff
 
 
 logger = logging.getLogger(__name__)

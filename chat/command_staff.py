@@ -32,6 +32,7 @@ async def questions(callback: CallbackQuery, state):
 async def await_message(message: Message, state):
     async with state.proxy() as data:
         data['text'] = message.text
+        data['id_massage'] = message.message_id
         await add_message_db(data, message.from_user.id, message.chat.id)
     await message.answer(text='Вопрос отправлен!')
     await state.finish()

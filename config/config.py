@@ -35,6 +35,6 @@ def load_config(path: str | None) -> Config:
             database=env('DATABASE')
         ),
         tg_bot=TgBot(
-            token=env('TOKEN')
+            token=env('TOKEN'),
         )
     )
