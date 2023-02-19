@@ -11,7 +11,7 @@ config: Config = load_config('.env')
 loop = asyncio.get_event_loop()
 
 
-async def add_user(message: Message):
+async def add_user(message: Message, post: str = 'staff'):
     try:
         conn = await aiomysql.connect(user=config.database.user,
                                       password=config.database.password,
@@ -19,11 +19,12 @@ async def add_user(message: Message):
                                       loop=loop)
         async with conn.cursor() as cur:
             add_us = f'INSERT INTO all_users ' \
-                     f"VALUES({message.from_user.id}, 'staff')"
-            await cur.execute(add_us)
-            add_us = f'INSERT INTO staff ' \
-                     f'VALUES({message.from_user.id})'
-            await cur.execute(add_us)
+                     f"VALUES({message.from_user.id}, %s)"
+            await cur.execute(add_us, post)
+            if post == 'staff':
+                add_us = f'INSERT INTO staff ' \
+                         f'VALUES({message.from_user.id})'
+                await cur.execute(add_us)
             await conn.commit()
         conn.close()
     except Exception as ex:
@@ -207,8 +208,91 @@ async def add_ban_list(id: int):
                                         password=config.database.password, db=config.database.database,
                                         loop=loop)
         async with conn.cursor() as cur:
-            string = f"INSERT INTO blank_list " \
-                     f"VALUES {id}"
+            string = f"INSERT INTO ban_list VALUES (%s, %s)"
+            await cur.execute(string, (id, 'staff'))
+            await conn.commit()
         conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+def watch_ban_list():
+    try:
+        conn = conn = pymysql.connect(host=config.database.host,
+                                      user=config.database.user,
+                                      password=config.database.password,
+                                      database=config.database.database)
+        data: str = ''
+        with conn.cursor() as cur:
+            string = f"SELECT id_user FROM ban_list WHERE post='staff'"
+            cur.execute(string)
+            data = cur.fetchone()
+        conn.close()
+        print(data)
+        return int(data[0])
+    except Exception as ex:
+        print(ex)
+
+
+async def update_ban_list(*data):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password, db=config.database.database,
+                                      loop=loop)
+        async with conn.cursor() as cur:
+            if data[0]['apply'] == "Да":
+                string = f"DELETE FROM ban_list WHERE id_user=%s"
+                await cur.execute(string, int(data[0]['person']))
+                string = f"UPDATE all_users SET post=%s WHERE id_user=%s"
+                await cur.execute(string, ('staff', int(data[0]['person'])))
+                await conn.commit()
+            else:
+                string = f"UPDATE ban_list SET post=%s WHERE id_user=%s"
+                await cur.execute(string, ('ban', int(data[0]['person'])))
+                string = f"UPDATE all_users SET post=%s WHERE id_user=%s"
+                await cur.execute(string, ('ban', int(data[0]['person'])))
+                await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+async def is_correct_quest(*data):
+    try:
+        conn = await aiomysql.connect(user=config.database.user,
+                                      password=config.database.password, db=config.database.database,
+                                      loop=loop)
+        count: int = 0
+        async with conn.cursor() as cur:
+            string = f"SELECT * FROM quest WHERE id_quest=1"
+            await cur.execute(string)
+            string = await cur.fetchall()
+            print(string[0])
+            for d in data[0]:
+                if data[0][d] in string[0]:
+                    count += 1
+            string = f"UPDATE staff SET pound=%s"
+            print(count, count / 5)
+            await cur.execute(string, (count / 5))
+            await conn.commit()
+        conn.close()
+    except Exception as ex:
+        print(ex)
+
+
+def result_test(id: int) -> str:
+    try:
+        conn = conn = pymysql.connect(host=config.database.host,
+                                      user=config.database.user,
+                                      password=config.database.password,
+                                      database=config.database.database)
+        data: str = ''
+        with conn.cursor() as cur:
+            string = f"SELECT pound FROM staff WHERE id_staff=%s"
+            cur.execute(string, id)
+            data = cur.fetchone()
+        conn.close()
+        print("data = ", data)
+        return data[0]
     except Exception as ex:
         print(ex)

@@ -51,3 +51,16 @@ class FSMChatHR(StatesGroup):
     start = State()
     request = State()
     await_message = State()
+
+
+class FSMRuk(StatesGroup):
+    start = State()
+    load = State()
+
+
+class FSMQuest(StatesGroup):
+    start = State()
+    quest1 = State()
+    quest2 = State()
+    quest3 = State()
+    quest4 = State()
