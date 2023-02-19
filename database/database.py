@@ -2,7 +2,7 @@ import asyncio
 import pymysql
 import aiomysql
 
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message
 
 from config.config import Config, load_config
 

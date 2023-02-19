@@ -1,5 +1,3 @@
-import asyncio
-
 from aiogram import Dispatcher
 from aiogram.types import CallbackQuery, Message
 from aiogram.utils.exceptions import MessageNotModified
@@ -10,10 +8,10 @@ from keyboard.keyboard import create_pagination_keyboard
 
 async def process_beginning_command(message: Message):
     id_number: int = page_prez(message.from_user.id)
-    await message.answer_photo(photo='AgACAgIAAxkBAAICnWPxCJ6ZslBnEMpWZMgrngdrG2ILAAJLxDEbCQKJS28GzbFAuOQjAQADAgADeQADLgQ',
-                               reply_markup=create_pagination_keyboard(
-        "backward", f"{id_number}", "forward"
-    ))
+    await message.answer_photo(
+        photo='AgACAgIAAxkBAAICnWPxCJ6ZslBnEMpWZMgrngdrG2ILAAJLxDEbCQKJS28GzbFAuOQjAQADAgADeQADLgQ',
+        reply_markup=create_pagination_keyboard(
+            "backward", f"{id_number}", "forward"))
 
 
 async def process_forward(callback: CallbackQuery):
@@ -24,9 +22,9 @@ async def process_forward(callback: CallbackQuery):
             await update(callback.from_user.id, id_number + 1)
             id_number: int = page_prez(callback.from_user.id)
             await callback.message.answer_photo(photo=get_photo(id_number),
-                                                 reply_markup=create_pagination_keyboard(
-                                                   "backward", f"{id_number}", "forward"
-                                               ))
+                                                reply_markup=create_pagination_keyboard(
+                                                    "backward", f"{id_number}", "forward"
+                                                ))
         else:
             await callback.answer()
     except MessageNotModified:
@@ -43,8 +41,8 @@ async def process_backward(callback: CallbackQuery):
             print(get_photo(id_number))
             await callback.message.answer_photo(photo=get_photo(id_number),
                                                 reply_markup=create_pagination_keyboard(
-                                                  "backward", f"{id_number}", "forward"
-                                              ))
+                                                    "backward", f"{id_number}", "forward"
+                                                ))
         else:
             await callback.answer()
     except MessageNotModified:

@@ -1,6 +1,5 @@
 from aiogram import Dispatcher
-from aiogram.types import CallbackQuery, Message
-from aiogram.utils.exceptions import MessageNotModified
+from aiogram.types import Message
 from database.database import is_staff_user, add_ban_list
 
 
