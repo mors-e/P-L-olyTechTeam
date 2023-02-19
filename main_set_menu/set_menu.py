@@ -7,6 +7,7 @@ async def set_main_menu(dp: Dispatcher) -> None:
         types.BotCommand(command="/begin", description="Просмотреть пример чекпоинта road map"),
         types.BotCommand(command="/cancel", description="Отменить анкетирование"),
         types.BotCommand(command="/feedback", description="чат от имени staff"),
-        types.BotCommand(command="/start_request", description="чат от имени hr")
+        types.BotCommand(command="/start_request", description="чат от имени hr"),
+        types.BotCommand(command="ban_list", description="Посмотреть заявки на статус сотрудника")
     ]
     await dp.bot.set_my_commands(main_menu_commands)

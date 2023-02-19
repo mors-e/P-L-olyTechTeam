@@ -11,6 +11,7 @@ from handlers.handlers_main import register_handlers_main
 from handlers.fsw import register_fsm_handlers
 from handlers.head import register_head_handlers
 from main_set_menu.set_menu import set_main_menu
+from handlers.admin import register_admin
 
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,7 @@ def register_all_handlers(dp: Dispatcher) -> None:
     register_head_handlers(dp)
     register_chat_commands_staff(dp)
     register_chat_commands_hr(dp)
+    register_admin(dp)
 
 
 async def main():
